@@ -39,16 +39,9 @@ export default class Main extends Component {
       }),
       is_news_loaded: false,
       news: {},
-      news_items: [],
-      loaded: false
+      news_items: []
     };
 
-  }
-
-  handleChange(event){
-    this.setState({
-      text: event.nativeEvent.text
-    })
   }
 
   getNewsItems(){
@@ -89,7 +82,6 @@ export default class Main extends Component {
 
       }else{
   
-        var limited_news_items = [];
         _.map(news_items, function(row, index){
           if(row.id == data.new_val.id){
             news_items[index].upvotes = data.new_val.upvotes;
@@ -107,7 +99,7 @@ export default class Main extends Component {
 
   updateUI(news_items){
     var ordered_news_items = _.orderBy(news_items, 'upvotes', 'desc');
-    var limited_news_items = _.slice(ordered_news_items, 0, 29);
+    var limited_news_items = _.slice(ordered_news_items, 0, 30);
     var news_datasource = this.state.news_items_datasource.cloneWithRows(limited_news_items);
 
     this.setState({
@@ -168,6 +160,10 @@ export default class Main extends Component {
     })
       .then((response) => {
         alert('News was shared!');
+        this.setState({
+          news_title: '',
+          news_url: ''
+        });
       })
       .catch((err) => {
         alert('Error occured while sharing news');
@@ -192,9 +188,11 @@ export default class Main extends Component {
               <Text style={styles.upvote_text}>{news.upvotes}</Text>
           </View>
         </TouchableHighlight>
-        <View style={styles.news_title}>
-          <Text style={styles.news_item_text}>{news.title}</Text>
-        </View>
+        <TouchableHighlight onPress={this.openPage.bind(this, news.url)} underlayColor={"#E8E8E8"}>
+          <View style={styles.news_title}>
+            <Text style={styles.news_item_text}>{news.title}</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
