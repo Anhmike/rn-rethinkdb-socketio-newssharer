@@ -32,7 +32,7 @@ r.connect({host: 'localhost', port: 28015}, function(err, conn) {
 
 });
 
-app.get('/create-table', function(req, res){
+app.get('/add-index', function(req, res){
     r.db('newssharer').table('news_items').indexCreate('upvotes').run(connection, function(err, result){
     	console.log('boom');
     	res.send('ok')
